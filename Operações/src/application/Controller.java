@@ -165,8 +165,7 @@ public class Controller {
     
     public void initialize() {
     	//instanciar um togglegroup
-    	this.tg = new ToggleGroup();
-    	
+    	this.tg = new ToggleGroup();    	
     	this.soma.setToggleGroup(tg);
     	this.sub.setToggleGroup(tg);
     	this.mult.setToggleGroup(tg);
