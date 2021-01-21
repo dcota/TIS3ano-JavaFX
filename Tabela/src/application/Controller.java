@@ -24,10 +24,10 @@ public class Controller {
     private TableColumn<Aviao, String> colunaModelo;
 
     @FXML
-    private TableColumn<Aviao, Integer> colunaCapacidade;
+    private TableColumn<Aviao, String> colunaCapacidade;
 
     @FXML
-    private TableColumn<Aviao, Boolean> colunaAtivo;
+    private TableColumn<Aviao, String> colunaAtivo;
 
     @FXML
     private TextField textFieldFabricante;
@@ -45,7 +45,20 @@ public class Controller {
     private TextField textFieldAtivo;
     
     private ObservableList<Aviao> listaAviao;
-
+    
+	public void initialize() {
+	    	
+	    	//criar valores iniciais da comboBox
+	    	this.comboBoxAtivo.getItems().addAll("Sim","Não");
+	    	
+	    	//ligação entre a classe Aviao e a tableView
+	    	listaAviao = FXCollections.observableArrayList();
+	    	this.colunaFabricante.setCellValueFactory(new PropertyValueFactory<Aviao,String>("fabricante"));
+	    	this.colunaModelo.setCellValueFactory(new PropertyValueFactory<Aviao,String>("modelo"));
+	    	this.colunaCapacidade.setCellValueFactory(new PropertyValueFactory<Aviao,String>("capacidade"));
+	    	this.colunaAtivo.setCellValueFactory(new PropertyValueFactory<Aviao,String>("ativo"));	
+	}
+	
     @FXML
     void adicionar(ActionEvent event) {
     	try {
@@ -77,7 +90,11 @@ public class Controller {
     		}
     		
     	} catch(NumberFormatException e) {
-    		
+    		Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(null);
+			alert.setTitle("ERRO");
+			alert.setContentText("Valor da capacidade inválido...");
+			alert.showAndWait();
     	}
     }
 
@@ -96,19 +113,6 @@ public class Controller {
 		this.textFieldAtivo.setText(this.comboBoxAtivo.getValue());
     }
     
-    public void initialize() {
-    	
-    	//criar valores iniciais da comboBox
-    	this.comboBoxAtivo.getItems().addAll("Sim","Não");
-    	
-    	//ligação entre a classe Aviao e a tableView
-    	listaAviao = FXCollections.observableArrayList();
-    	this.colunaFabricante.setCellValueFactory(new PropertyValueFactory<Aviao,String>("fabricante"));
-    	this.colunaModelo.setCellValueFactory(new PropertyValueFactory<Aviao,String>("modelo"));
-    	this.colunaCapacidade.setCellValueFactory(new PropertyValueFactory<Aviao,Integer>("capacidade"));
-    	this.colunaAtivo.setCellValueFactory(new PropertyValueFactory<Aviao,Boolean>("ativo"));
-	
-    }
-
+    
 }
 
