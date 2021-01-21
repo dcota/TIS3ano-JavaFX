@@ -13,7 +13,7 @@
    <children>
       <VBox layoutX="335.0" prefHeight="600.0" prefWidth="566.0">
          <children>
-            <TableView fx:id="tabelaAvioes" prefHeight="600.0" prefWidth="514.0">
+            <TableView fx:id="tabelaAvioes" onMouseClicked="#selecionar" prefHeight="600.0" prefWidth="514.0">
               <columns>
                 <TableColumn fx:id="colunaFabricante" prefWidth="154.0" text="Fabricante" />
                 <TableColumn fx:id="colunaModelo" minWidth="8.0" prefWidth="90.0" text="Modelo" />
