@@ -47,7 +47,7 @@ public class Controller {
     private ObservableList<Aviao> listaAviao;
     
 	public void initialize() {
-	    	
+		
 	    	//criar valores iniciais da comboBox
 	    	this.comboBoxAtivo.getItems().addAll("Sim","Não");
 	    	
@@ -73,7 +73,7 @@ public class Controller {
     		else
     			ativo=false;
     		
-    		//instancia objeto Aviao
+    		//instanciar objeto Aviao
     		Aviao av = new Aviao(fabricante,modelo,capacidade,ativo);
     		
     		//adicionar o registo à lista e mostrar a lista na tabela
