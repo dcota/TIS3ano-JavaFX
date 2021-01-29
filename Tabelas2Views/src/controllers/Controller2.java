@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -13,6 +14,7 @@ public class Controller2 {
     @FXML private Button btnFechar;
     @FXML private Button btnSubmeter;
     @FXML private TextArea taTextoView2;
+    @FXML private Label mostrarTexto;
 
     private String texto;
 
@@ -37,4 +39,9 @@ public class Controller2 {
     public String getTexto(){
         return this.texto;
     }
+
+    public void preencheLabel(String txt){
+        this.mostrarTexto.setText(txt);
+    }
+
 }

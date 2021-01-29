@@ -16,5 +16,6 @@
       <TextArea fx:id="taTextoView2" layoutX="63.0" layoutY="79.0" prefHeight="200.0" prefWidth="474.0" />
       <Button fx:id="btnSubmeter" layoutX="422.0" layoutY="350.0" mnemonicParsing="false" onAction="#submeterTexto" text="Submeter" />
       <Button fx:id="btnFechar" layoutX="496.0" layoutY="350.0" mnemonicParsing="false" onAction="#fecharView2" text="Fechar" />
+      <Label fx:id="mostrarTexto" layoutX="63.0" layoutY="319.0" text="Label" />
    </children>
 </AnchorPane>
