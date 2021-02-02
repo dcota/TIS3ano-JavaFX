@@ -25,6 +25,7 @@ public class Controller1 {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/view2.fxml"));
         Parent root = loader.load();
         Controller2 controller = loader.getController(); //a variável controller fica associada ao Controller2
+        //lançar a segunda view
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
@@ -40,9 +41,12 @@ public class Controller1 {
     void enviarTexto(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/view2.fxml"));
         Parent root = loader.load();
+
         Controller2 controller = loader.getController(); //a variável controller fica associada ao Controller2
-        //envia o conteúdo da caixa de texto para a View2
+        //envia o conteúdo da caixa de texto para o controller2 antes de lançar a view2
         controller.preencheLabel(this.tfTexto.getText());
+
+        //lançar a segunda view
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
