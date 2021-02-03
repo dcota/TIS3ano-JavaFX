@@ -48,7 +48,6 @@ public class Dados {
     public double soma (){
         return this.val1 + this.val2;
     }
-
     public double sub (){
         return this.val1 - this.val2;
     }

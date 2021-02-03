@@ -70,47 +70,54 @@ public class MainController {
     void calcular(ActionEvent event) throws IOException {
         //verifica se todos os atributos possuem valores. se sim criar um objeto da classe Dados
         if(chkDados()){
-            double val1 = Double.parseDouble(this.tfVal1.getText());
-            double val2 = Double.parseDouble(this.tfVal2.getText());
-            String op = "";
-            if(this.rbSoma.isSelected()){
-                op="somar";
-            }
-            if(this.rbSub.isSelected()){
-                op="subtrair";
-            }
-            if(this.rbMult.isSelected()){
-                op="multiplicar";
-            }
-            if(this.rbDiv.isSelected()){
-                op="dividir";
-            }
-            int casasDec = this.comboBoxDec.getValue();
+            try {
+                double val1 = Double.parseDouble(this.tfVal1.getText());
+                double val2 = Double.parseDouble(this.tfVal2.getText());
+                String op = "";
+                if (this.rbSoma.isSelected()) {
+                    op = "somar";
+                }
+                if (this.rbSub.isSelected()) {
+                    op = "subtrair";
+                }
+                if (this.rbMult.isSelected()) {
+                    op = "multiplicar";
+                }
+                if (this.rbDiv.isSelected()) {
+                    op = "dividir";
+                }
+                int casasDec = this.comboBoxDec.getValue();
 
-            //instanciar classe Dados
-            Dados opera = new Dados(val1,val2,op,casasDec);
+                //instanciar classe Dados
+                Dados opera = new Dados(val1, val2, op, casasDec);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/secondView.fxml"));
-            Parent root = loader.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/secondView.fxml"));
+                Parent root = loader.load();
 
-            SecondController controller = loader.getController();
+                SecondController controller = loader.getController();
 
-            if(opera.getVal2() == 0 && opera.getOpera().equals("dividir")){
+                if (opera.getVal2() == 0 && opera.getOpera().equals("dividir")) {
+                    Alert alerta = new Alert(Alert.AlertType.ERROR);
+                    alerta.setHeaderText(null);
+                    alerta.setTitle("ERRO!");
+                    alerta.setContentText("Divisão por zero!");
+                    alerta.showAndWait();
+                } else {
+                    //envia dados para o controller da segunda view (variável dadosOpera através do método getDados())
+                    controller.getDados(opera);
+                    //lançar a segunda view
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.setScene(scene);
+                    stage.showAndWait();
+                }
+            } catch (NumberFormatException e){
                 Alert alerta = new Alert(Alert.AlertType.ERROR);
                 alerta.setHeaderText(null);
                 alerta.setTitle("ERRO!");
-                alerta.setContentText("Divisão por zero!");
+                alerta.setContentText("Formato de número inválido...");
                 alerta.showAndWait();
-            }
-            else {
-                //envia dados para o controller da segunda view (variável dadosOpera através do método getDados())
-                controller.getDados(opera);
-                //lançar a segunda view
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                stage.initModality(Modality.WINDOW_MODAL);
-                stage.setScene(scene);
-                stage.showAndWait();
             }
         }
         else {
