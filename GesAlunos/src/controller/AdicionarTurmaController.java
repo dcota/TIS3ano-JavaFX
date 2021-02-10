@@ -45,7 +45,21 @@ public class AdicionarTurmaController {
 
     @FXML
     void adicionarTurma(ActionEvent event) {
-
+        if(!tfTurma.getText().equals("")  &&  cbCurso.getValue()!=null  &&  cbAno.getValue()!=null){
+            String nome = tfTurma.getText();
+            String curso = cbCurso.getValue();
+            int ano = cbAno.getValue();
+            Turma t = new Turma(nome,curso,ano);
+            insertTurma(t);
+            queryTurmas();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setTitle("ERRO");
+            alert.setContentText("Verifique os dados preenchidos...");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -67,46 +81,13 @@ public class AdicionarTurmaController {
         //criar ligação à bd
         connectDB();
         //query das turmas existentes
-        turmasQuery();
+        queryTurmas();
+        //query para preencher a combo box de cursos
+        queryCursos();
+        //query para preencher a combo box de anos
+        queryAnos();
 
     }
-    public void turmasQuery(){
-        try{
-            String sql = "SELECT nomeTurma, nomeCurso, anoTurma " +
-                    "FROM turma, curso, ano_curso " +
-                    "WHERE turma.curso_idCurso = curso.idCurso " +
-                    "AND turma.idAno = ano_curso.idAno";
-            Statement statement = this.connection.createStatement();
-            ResultSet result = statement.executeQuery(sql);
-            turmas.clear();
-            while(result.next()) {
-                //retirar os dois valores de cada linha
-                String nome = result.getString(1);
-                String curso = result.getString(2);
-                int ano = result.getInt(3);
-                //criar objeto da classe turma com os dois valores
-                Turma t = new Turma(nome,curso,ano);
-                //adicionar o novo objeto à lista (ObservableList)
-                this.turmas.add(t);
-                //refresh da tabela
-                this.tblTurmas.refresh();
-                //adicionar o curso à combo box de cursos
-                cbCurso.getItems().add(curso);
-
-            }
-            statement = this.connection.createStatement();
-            result = statement.executeQuery("SELECT anoTurma FROM ano_curso");
-            while(result.next()) {
-                int ano = result.getInt(1);
-                cbAno.getItems().add(ano);
-            }
-            statement.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void connectDB() throws IOException {
         Properties p = new Properties();
         InputStream is = new FileInputStream("dbConfig.properties");
@@ -122,11 +103,95 @@ public class AdicionarTurmaController {
             alert.showAndWait();
         }
     }
-
-    public void getConnection(Connection connection){
-        this.connection = connection;
+    public void queryTurmas() {
+        String sql = "SELECT nomeTurma, nomeCurso, anoTurma "
+                + "FROM turma, curso, ano_curso "
+                + "WHERE turma.curso_idCurso=curso.idCurso "
+                + "AND turma.idAno=ano_curso.idAno";
+        try {
+            Statement stm = this.connection.createStatement();
+            ResultSet result = stm.executeQuery(sql);
+            turmas.clear();
+            while(result.next()) {
+                String nome = result.getString(1);
+                String curso = result.getString(2);
+                int ano = result.getInt(3);
+                Turma t = new Turma(nome,curso,ano);
+                turmas.add(t);
+                this.tblTurmas.refresh();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+    public void queryCursos() {
+        String sql = "SELECT nomeCurso FROM curso";
 
+        try {
+            Statement stm = this.connection.createStatement();
+            ResultSet result = stm.executeQuery(sql);
+            while(result.next()) {
+                String nome = result.getString(1);
+                this.cbCurso.getItems().add(nome);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void queryAnos() {
+        String sql = "SELECT anoTurma FROM ano_curso";
+        try {
+            Statement stm = this.connection.createStatement();
+            ResultSet result = stm.executeQuery(sql);
+            while(result.next()) {
+                int ano = result.getInt(1);
+                this.cbAno.getItems().add(ano);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void insertTurma(Turma turma){
+        try {
+            String nome = turma.getNome();
+            String curso = turma.getCurso();
+            int ano = turma.getAno();
+            //ir buscar o id do curso
+            String sql = "SELECT idCurso FROM curso WHERE nomeCurso = " + "\"" + curso + "\"";
+            System.out.println("SELECT idCurso FROM curso WHERE nomeCurso = " + "\"" + curso + "\"");
+            Statement stm = this.connection.createStatement();
+            ResultSet result = stm.executeQuery(sql);
+            int idCurso=0;
+            while(result.next()) {
+                idCurso = result.getInt(1);
+            }
+            //ir buscar o id do curso
+            sql = "SELECT idAno FROM ano_curso WHERE anoTurma = " + ano;
+            stm = this.connection.createStatement();
+            result = stm.executeQuery(sql);
+            int idAno=0;
+            while(result.next()) {
+                idAno = result.getInt(1);
+            }
+            stm.close();
+            sql = "INSERT INTO turma (nomeTurma,curso_idCurso,idAno) VALUES (?,?,?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, nome);
+            statement.setInt(2, idCurso);
+            statement.setInt(3, idAno);
+            int rows = statement.executeUpdate();
+            if(rows > 0) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setTitle("INFO");
+                alert.setContentText("Turma criada com sucesso!");
+                alert.showAndWait();
+            }
+            statement.close();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

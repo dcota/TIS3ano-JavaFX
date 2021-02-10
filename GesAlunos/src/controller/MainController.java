@@ -50,9 +50,10 @@ public class MainController {
 
     @FXML
     void adicionarTurma(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/view/adicionarTurmaView.fxml"));
-        Pane pane = (Pane) loader.load();
-        bpLabel.setCenter(pane);
+        //FXMLLoader loader = new FXMLLoader(Main.class.getResource("/view/adicionarTurmaView.fxml"));
+        //Pane pane = (Pane) loader.load();
+        Pane view = getView("/view/adicionarTurmaView.fxml");
+        bpLabel.setCenter(view);
     }
 
     //método para colocar a nova view na MainView
