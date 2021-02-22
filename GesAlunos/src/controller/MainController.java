@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class MainController {
+
     private Pane view;
 
     private Connection connection;

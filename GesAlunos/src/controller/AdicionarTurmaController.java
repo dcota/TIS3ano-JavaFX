@@ -3,6 +3,7 @@ package controller;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.*;
 import java.util.Properties;
 
@@ -10,8 +11,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import model.Turma;
 
 public class AdicionarTurmaController {
@@ -43,6 +50,8 @@ public class AdicionarTurmaController {
     @FXML
     private TableColumn<Turma, Integer> colAno;
 
+    private Pane view;
+
     @FXML
     void adicionarTurma(ActionEvent event) {
         if(!tfTurma.getText().equals("")  &&  cbCurso.getValue()!=null  &&  cbAno.getValue()!=null){
@@ -63,8 +72,7 @@ public class AdicionarTurmaController {
     }
 
     @FXML
-    void cancelar(ActionEvent event) {
-
+    void cancelar(ActionEvent event) throws IOException {
     }
 
     private ObservableList<Turma> turmas;
@@ -158,7 +166,6 @@ public class AdicionarTurmaController {
             int ano = turma.getAno();
             //ir buscar o id do curso
             String sql = "SELECT idCurso FROM curso WHERE nomeCurso = " + "\"" + curso + "\"";
-            System.out.println("SELECT idCurso FROM curso WHERE nomeCurso = " + "\"" + curso + "\"");
             Statement stm = this.connection.createStatement();
             ResultSet result = stm.executeQuery(sql);
             int idCurso=0;
